@@ -1,0 +1,83 @@
+/* ===== Auth Shared Styles (LoginForm) ===== */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #eef2ff 0%, #f8fafc 60%, #e0f2fe 100%);
+    padding: 24px;
+}
+
+.auth-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(79, 70, 229, 0.1), 0 1px 4px rgba(0, 0, 0, 0.06);
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid rgba(79, 70, 229, 0.08);
+}
+
+.auth-card-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.auth-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+    letter-spacing: -0.4px;
+}
+
+.auth-subtitle {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+.auth-link p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    transition: color 0.2s;
+}
+
+.auth-link p span {
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+.auth-link:hover p {
+    color: #4f46e5;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 32px 24px;
+    }
+
+    .auth-title {
+        font-size: 1.5rem;
+    }
+}

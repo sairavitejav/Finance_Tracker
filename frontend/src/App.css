@@ -1,0 +1,5 @@
+/* App root */
+#root {
+    min-height: 100vh;
+    background-color: var(--bg);
+}
