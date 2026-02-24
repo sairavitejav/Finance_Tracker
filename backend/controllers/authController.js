@@ -23,6 +23,7 @@ const registerUser = async (req, res) => {
       const token = jwt.sign(
         {
           id: user._id,
+          username: user.username,
         },
         process.env.JWT_SECRET,
         { expiresIn: "1d" },
@@ -49,9 +50,13 @@ const loginUser = async (req, res) => {
     return res.status(400).json({ message: "Invalid Password" });
   }
 
-  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    },
+  );
   res.send({ token });
 };
 
