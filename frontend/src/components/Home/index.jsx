@@ -12,7 +12,7 @@ const Home = () => {
   if (jwtToken) {
     try {
       const decodedJwt = jwtDecode(jwtToken);
-      username = decodedJwt.username;
+      username = (decodedJwt.username).toUpperCase();
     } catch (error) {
       console.log(error);
       username = "User";

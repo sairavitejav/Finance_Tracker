@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./index.css";
 
 const LoginForm = () => {
@@ -79,24 +80,25 @@ const LoginForm = () => {
             <label className="form-label" htmlFor="password">
               Password
             </label>
-            <input
-              className="form-input"
-              onChange={readPassword}
-              value={password}
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your Password"
-            />
+            <div className="pass-input-container">
+              <input
+                className="pass-input"
+                onChange={readPassword}
+                value={password}
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your Password"
+              />
+              <button
+                onClick={showOrHidePassword}
+                className="pass-icon"
+                type="button"
+              >
+                {showPassword ? (<FaEyeSlash />) : (<FaEye />)}
+              </button>
+            </div>
           </div>
-          <div className="form-group">
-            <button
-              onClick={showOrHidePassword}
-              className="btn-primary"
-              type="button"
-            >
-              {showPassword ? "Hide" : "Show"}
-            </button>
-          </div>
+          <div className="form-group"></div>
           <div className="form-group">
             <button className="btn-primary" type="submit">
               Login
