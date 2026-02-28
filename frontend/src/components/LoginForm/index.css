@@ -108,3 +108,8 @@
     border: none;
     outline: none;
 }
+.spinner-class{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

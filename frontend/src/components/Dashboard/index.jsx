@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import Cookies from "js-cookie";
+import { TailSpin } from "react-loader-spinner";
 import TransactionsList from "../TransactionsList";
 import AddTransaction from "../AddTransaction";
 import Charts from "../Charts";
@@ -23,6 +24,7 @@ const Dashboard = () => {
     filteringCategories[0],
   );
   const [selectedDate, setSelectedDate] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const filteredTransactionsList = useMemo(() => {
     return transactionsList.filter((eachTransaction) => {
@@ -70,6 +72,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getTransactions = async () => {
+      // setIsLoading(true)
       const apiUrl = `${import.meta.env.VITE_API_URL}/api/transactions`;
       const jwtToken = Cookies.get("jwt_token");
       const options = {
@@ -83,8 +86,10 @@ const Dashboard = () => {
       const data = await response.json();
       if (response.ok === true) {
         setTransactionsList(data);
+        setIsLoading(false);
       } else {
         alert("Failed to Fetch Transactions");
+        setIsLoading(false);
       }
     };
     getTransactions();
@@ -158,7 +163,16 @@ const Dashboard = () => {
             )}
           </div>
 
-          {filteredTransactionsList.length !== 0 ? (
+          {isLoading ? (
+            <div className="spinner-class">
+              <TailSpin
+                height="20"
+                width="20"
+                color="#f40808"
+                ariaLabel="tail-spin-loading"
+              />
+            </div>
+          ) : filteredTransactionsList.length !== 0 ? (
             <ul className="transactions-list">
               {filteredTransactionsList.map((eachTransaction) => (
                 <TransactionsList
@@ -175,7 +189,18 @@ const Dashboard = () => {
           )}
         </div>
 
-        <Charts transactionsList={filteredTransactionsList} />
+        {isLoading ? (
+          <div className="spinner-class">
+            <TailSpin
+              height="20"
+              width="20"
+              color="#f40808"
+              ariaLabel="tail-spin-loading"
+            />
+          </div>
+        ) : (
+          <Charts transactionsList={filteredTransactionsList} />
+        )}
       </div>
     </div>
   );

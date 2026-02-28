@@ -2,12 +2,14 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { TailSpin } from "react-loader-spinner";
 import "./index.css";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const readUsername = (event) => {
@@ -36,6 +38,7 @@ const LoginForm = () => {
     if (!username || !password) {
       alert("Please Enter Username and Password");
     } else {
+      setIsLoading((prev) => !prev);
       const userDetails = { username, password };
       const apiUrl = `${import.meta.env.VITE_API_URL}/api/auth/login`;
       const options = {
@@ -49,8 +52,10 @@ const LoginForm = () => {
       const data = await response.json();
       if (response.ok === true) {
         submitSuccess(data.token);
+        setIsLoading((prev) => !prev);
       } else {
         submitFailure(data.message);
+        setIsLoading((prev) => !prev);
       }
     }
   };
@@ -62,6 +67,16 @@ const LoginForm = () => {
           <h1 className="auth-title">Welcome Back</h1>
           <p className="auth-subtitle">Sign in to your Finance Tracker</p>
         </div>
+        {isLoading && (
+          <div className="spinner-class">
+            <TailSpin
+              height="20"
+              width="20"
+              color="#f40808"
+              ariaLabel="tail-spin-loading"
+            />
+          </div>
+        )}
         <form className="auth-form" onSubmit={onSubmitForm}>
           <div className="form-group">
             <label className="form-label" htmlFor="username">
@@ -94,7 +109,7 @@ const LoginForm = () => {
                 className="pass-icon"
                 type="button"
               >
-                {showPassword ? (<FaEyeSlash />) : (<FaEye />)}
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
           </div>

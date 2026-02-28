@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { TailSpin } from "react-loader-spinner";
 import "./index.css";
 
 const RegisterForm = () => {
@@ -9,6 +10,7 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,6 +38,7 @@ const RegisterForm = () => {
     } else if (password !== confirmPassword) {
       alert("Passsword and Confirm Password didn't matched, Try again");
     } else {
+      setIsLoading((prev) => !prev);
       const userDetails = { username, password };
       const apiUrl = `${import.meta.env.VITE_API_URL}/api/auth/register`;
       const options = {
@@ -50,8 +53,10 @@ const RegisterForm = () => {
       if (response.ok === true) {
         Cookies.set("jwt_token", data.token, { expires: 1 });
         navigate("/", { replace: true });
+        setIsLoading((prev) => !prev);
       } else {
         alert(data.message);
+        setIsLoading((prev) => !prev);
       }
     }
   };
@@ -63,6 +68,17 @@ const RegisterForm = () => {
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Join Finance Tracker today</p>
         </div>
+        {isLoading && (
+          <div className="spinner-class">
+            <TailSpin
+              height="20"
+              width="20"
+              color="#f40808"
+              ariaLabel="tail-spin-loading"
+            />
+          </div>
+        )}
+
         <form className="auth-form" onSubmit={onSubmitForm}>
           <div className="form-group">
             <label className="form-label" htmlFor="username">
