@@ -25,36 +25,44 @@ const Dashboard = () => {
   );
   const [selectedDate, setSelectedDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
   const filteredTransactionsList = useMemo(() => {
     return transactionsList.filter((eachTransaction) => {
       const categoryMatch =
         selectedCategory === "All" ||
         eachTransaction.category === selectedCategory;
-      const dateMatch =
-        selectedDate === "" ||
-        eachTransaction.date?.split("T")[0] === selectedDate;
+      // const dateMatch =
+      //   selectedDate === "" ||
+      //   eachTransaction.date?.split("T")[0] === selectedDate;
+      const transactionDate = new Date(eachTransaction.date);
+      const fromMatch =
+        fromDate === "" || transactionDate >= new Date(fromDate);
+      const toMatch = toDate === "" || transactionDate <= new Date(toDate);
 
-      return categoryMatch && dateMatch;
+      return categoryMatch && fromMatch && toMatch;
     });
-  }, [transactionsList, selectedCategory, selectedDate]);
+  }, [transactionsList, selectedCategory, fromDate, toDate]);
 
   const monthlyTotal = useMemo(() => {
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
+    // const currentMonth = new Date().getMonth();
+    // const currentYear = new Date().getFullYear();
 
     return transactionsList.reduce((total, eachTransaction) => {
       const transactionDate = new Date(eachTransaction.date);
 
       if (
-        transactionDate.getMonth() === currentMonth &&
-        transactionDate.getFullYear() === currentYear
+        transactionDate.getMonth() === selectedMonth &&
+        transactionDate.getFullYear() === selectedYear
       ) {
         return total + Number(eachTransaction.amount);
       }
       return total;
     }, 0);
-  }, [transactionsList]);
+  }, [transactionsList, selectedMonth, selectedYear]);
 
   const todayTotal = useMemo(() => {
     const transactionDate = new Date().toISOString().split("T")[0];
@@ -99,9 +107,21 @@ const Dashboard = () => {
     setSelectedCategory(event.target.value);
   };
 
-  const selectDateFilter = (event) => {
-    setSelectedDate(event.target.value);
+  const selectFromDate = (event) => {
+    setFromDate(event.target.value);
   };
+
+  const selectToDate = (event) => {
+    setToDate(event.target.value);
+  };
+
+  const setMonthYear = (event) => {
+    // console.log(event.target.value)
+    setSelectedYear(Number(event.target.value.split("-")[0]));
+    setSelectedMonth(Number(event.target.value.split("-")[1] - 1));
+  };
+
+  // console.log(selectedMonth, selectedYear)
 
   return (
     <div className="dashboard-page">
@@ -111,7 +131,14 @@ const Dashboard = () => {
           <h1 className="dashboard-title">Dashboard</h1>
           <div className="summary-cards">
             <div className="summary-card">
-              <p className="summary-label">Monthly Total</p>
+              <div className="month-selector">
+                <p className="summary-label">Monthly Total</p>
+                <input
+                  type="month"
+                  value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}`}
+                  onChange={setMonthYear}
+                />
+              </div>
               <h4 className="summary-value">₹{monthlyTotal}</h4>
             </div>
             <div className="summary-card">
@@ -147,16 +174,30 @@ const Dashboard = () => {
                     </select>
                   </div>
                   <div className="filter-group">
-                    <label className="form-label" htmlFor="date">
-                      Filter By Date
-                    </label>
-                    <input
-                      className="form-input"
-                      value={selectedDate}
-                      onChange={selectDateFilter}
-                      type="date"
-                      id="date"
-                    />
+                    <div>
+                      <label className="form-label" htmlFor="fromdate">
+                        From Date
+                      </label>
+                      <input
+                        className="form-input"
+                        value={fromDate}
+                        onChange={selectFromDate}
+                        type="date"
+                        id="fromdate"
+                      />
+                    </div>
+                    <div>
+                      <label className="form-label" htmlFor="todate">
+                        To Date
+                      </label>
+                      <input
+                        className="form-input"
+                        value={toDate}
+                        onChange={selectToDate}
+                        type="date"
+                        id="todate"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
