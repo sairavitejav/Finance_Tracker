@@ -4,6 +4,7 @@ const dotenv = require("dotenv")
 const connectDB = require("./config/db")
 const authRoutes = require('./routes/authRoute')
 const transactionsRoutes = require('./routes/transactionRoutes')
+const profileRoutes = require('./routes/profileRoute')
 
 dotenv.config()
 
@@ -13,6 +14,7 @@ app.use(cors())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/transactions', transactionsRoutes)
+app.use('/api/profile', profileRoutes)
 
 // app.get('/', (req, res) => {
 //     res.send("From GET Request")

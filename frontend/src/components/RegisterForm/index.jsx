@@ -7,6 +7,7 @@ import "./index.css";
 
 const RegisterForm = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +17,10 @@ const RegisterForm = () => {
 
   const readUsername = (event) => {
     setUsername(event.target.value);
+  };
+
+  const readEmail = (event) => {
+    setEmail(event.target.value);
   };
 
   const readPassword = (event) => {
@@ -33,13 +38,13 @@ const RegisterForm = () => {
   const onSubmitForm = async (event) => {
     event.preventDefault();
 
-    if (!username || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       alert("Please Fill All the Fields");
     } else if (password !== confirmPassword) {
-      alert("Passsword and Confirm Password didn't matched, Try again");
+      alert("Password and Confirm Password didn't match, Try again");
     } else {
       setIsLoading((prev) => !prev);
-      const userDetails = { username, password };
+      const userDetails = { username, email, password };
       const apiUrl = `${import.meta.env.VITE_API_URL}/api/auth/register`;
       const options = {
         method: "POST",
@@ -91,6 +96,19 @@ const RegisterForm = () => {
               id="username"
               type="text"
               placeholder="Enter your Username"
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="form-input"
+              onChange={readEmail}
+              value={email}
+              id="email"
+              type="email"
+              placeholder="Enter your Email"
             />
           </div>
           <div className="form-group">

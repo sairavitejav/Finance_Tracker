@@ -39,9 +39,11 @@
     -webkit-appearance: none;
     margin: 0;
 }
-.btn-add{
-    width: 50%;
-    align-self: center;
+
+.btn-add {
+    width: max-content !important;
+    min-width: 200px;
+    margin: 0 auto;
 }
 
 @media (max-width: 640px) {

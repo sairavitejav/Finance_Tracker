@@ -23,12 +23,12 @@ const Dashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState(
     filteringCategories[0],
   );
-  const [selectedDate, setSelectedDate] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
 
   const filteredTransactionsList = useMemo(() => {
     return transactionsList.filter((eachTransaction) => {
@@ -74,13 +74,14 @@ const Dashboard = () => {
     }, 0);
   }, [transactionsList]);
 
+  const remainingBudget = monthlyIncome - monthlyTotal;
+
   const refreshPage = () => {
     setPageRefresh((prev) => !prev);
   };
 
   useEffect(() => {
     const getTransactions = async () => {
-      // setIsLoading(true)
       const apiUrl = `${import.meta.env.VITE_API_URL}/api/transactions`;
       const jwtToken = Cookies.get("jwt_token");
       const options = {
@@ -102,6 +103,25 @@ const Dashboard = () => {
     };
     getTransactions();
   }, [pageRefresh]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const apiUrl = `${import.meta.env.VITE_API_URL}/api/profile`;
+      const jwtToken = Cookies.get("jwt_token");
+      const response = await fetch(apiUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setMonthlyIncome(data.monthlyIncome ?? 0);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const selectCategoryFilter = (event) => {
     setSelectedCategory(event.target.value);
@@ -131,19 +151,31 @@ const Dashboard = () => {
           <h1 className="dashboard-title">Dashboard</h1>
           <div className="summary-cards">
             <div className="summary-card">
-              <div className="month-selector">
-                <p className="summary-label">Monthly Total</p>
-                <input
-                  type="month"
-                  value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}`}
-                  onChange={setMonthYear}
-                />
-              </div>
+              <p className="summary-label">Monthly Total</p>
+              <input
+                className="month-input"
+                type="month"
+                value={`${selectedYear}-${String(selectedMonth + 1).padStart(2, "00")}`}
+                onChange={setMonthYear}
+              />
               <h4 className="summary-value">₹{monthlyTotal}</h4>
             </div>
             <div className="summary-card">
               <p className="summary-label">Today's Spends</p>
               <h5 className="summary-value">₹{todayTotal}</h5>
+            </div>
+            <div className="summary-card summary-card--income">
+              <p className="summary-label">Monthly Income</p>
+              <h4 className="summary-value">₹{monthlyIncome}</h4>
+            </div>
+            <div className="summary-card summary-card--remaining">
+              <p className="summary-label">Remaining Budget</p>
+              <h4 className={`summary-value ${remainingBudget < 0 ? "summary-value--negative" : ""}`}>
+                ₹{remainingBudget}
+              </h4>
+              {remainingBudget < 0 && (
+                <p className="budget-warning">⚠ Budget exceeded by ₹{Math.abs(remainingBudget)}</p>
+              )}
             </div>
           </div>
         </div>

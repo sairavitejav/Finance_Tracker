@@ -19,6 +19,7 @@ const Header = () => {
       </div>
       <div className="header-actions">
         <Link className="header-links" to="/dashboard">Dashboard</Link>
+        <Link className="header-links" to="/profile">Profile</Link>
         <button className="logout-btn" onClick={onLogOut}>
           Logout
         </button>

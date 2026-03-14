@@ -14,23 +14,24 @@
   gap: 28px;
 }
 
-.month-selector {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.month-selector .summary-label {
-  margin-bottom: 0;
-}
-
-.month-selector input {
-  padding: 8px 12px;
-  border-radius: 8px;
+.month-input {
+  padding: 4px 8px;
+  border-radius: 6px;
   border: 1px solid #d1d5db;
-  font-size: 14px;
+  font-size: 0.78rem;
+  color: #475569;
+  background: #f1f5f9;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.month-input:focus {
+  border-color: #4f46e5;
 }
 
 /* ---- Summary Section ---- */
@@ -70,9 +71,34 @@
   border-left-color: #10b981;
 }
 
+.summary-card:nth-child(3),
+.summary-card--income {
+  border-left-color: #f59e0b;
+}
+
+.summary-card:nth-child(4),
+.summary-card--remaining {
+  border-left-color: #6366f1;
+}
+
 .summary-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.summary-value--negative {
+  color: #e11d48;
+}
+
+.budget-warning {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e11d48;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 6px;
+  padding: 5px 10px;
+  margin-top: 8px;
 }
 
 .summary-label {
