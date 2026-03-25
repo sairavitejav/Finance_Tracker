@@ -73,16 +73,7 @@ const RegisterForm = () => {
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Join Finance Tracker today</p>
         </div>
-        {isLoading && (
-          <div className="spinner-class">
-            <TailSpin
-              height="20"
-              width="20"
-              color="#f40808"
-              ariaLabel="tail-spin-loading"
-            />
-          </div>
-        )}
+        
 
         <form className="auth-form" onSubmit={onSubmitForm}>
           <div className="form-group">
@@ -158,7 +149,16 @@ const RegisterForm = () => {
           <div className="form-group"></div>
           <div className="form-group">
             <button className="btn-primary" type="submit">
-              Register
+              {isLoading ? (
+          <div className="spinner-class">
+            <TailSpin
+              height="20"
+              width="20"
+              color="#ffffff"
+              ariaLabel="tail-spin-loading"
+            />
+          </div>
+        ) : "Register"}
             </button>
           </div>
           <Link className="auth-link" to="/login">

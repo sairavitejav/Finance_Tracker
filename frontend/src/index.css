@@ -101,9 +101,12 @@ body {
 }
 
 .btn-primary {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  padding: 12px 20px;
+  height: 48px;
+  padding: 0 20px;
   background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
   color: #ffffff;
   border: none;

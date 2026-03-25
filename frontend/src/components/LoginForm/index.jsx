@@ -67,16 +67,6 @@ const LoginForm = () => {
           <h1 className="auth-title">Welcome Back</h1>
           <p className="auth-subtitle">Sign in to your Finance Tracker</p>
         </div>
-        {isLoading && (
-          <div className="spinner-class">
-            <TailSpin
-              height="20"
-              width="20"
-              color="#f40808"
-              ariaLabel="tail-spin-loading"
-            />
-          </div>
-        )}
         <form className="auth-form" onSubmit={onSubmitForm}>
           <div className="form-group">
             <label className="form-label" htmlFor="username">
@@ -116,7 +106,18 @@ const LoginForm = () => {
           <div className="form-group"></div>
           <div className="form-group">
             <button className="btn-primary" type="submit">
-              Login
+              {isLoading ? (
+                <div className="spinner-class">
+                  <TailSpin
+                    height="20"
+                    width="20"
+                    color="#ffffff"
+                    ariaLabel="tail-spin-loading"
+                  />
+                </div>
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
         </form>
